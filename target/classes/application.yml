@@ -29,4 +29,4 @@ spring:
       mode: always
       continue-on-error: true
 Server:
-       port: 8082
+       port: 8083

@@ -78,12 +78,14 @@ public class LoginController {
 	
 	@GetMapping("/home")
 	@PreAuthorize("isAuthenticated()")
-    public String homeCursos() {
-		
+    public String homeCursos(final Model model) {	
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String role = auth.getAuthorities().toString();
+		 String rut = auth.getName();
+		 model.addAttribute("curso", serviceEst.obtenerCurso(rut));
+		model.addAttribute("estudiante", serviceEst.obtenerEstudiante(rut));
 		if (role.contains("ADMIN")) {
-		            return "redirect:/admin";
+		            return "redirect:/admin/";
 		} else  {
 		        	return "index";
 		}
@@ -92,9 +94,7 @@ public class LoginController {
 	@GetMapping({"/", "/pagina/{pagina}"})
     public String indexCursos(final Model model, @PathVariable(required = false) Integer pagina, @PathVariable(required = false) Integer cant) {
 		model.addAttribute("cursos", serviceCurso.obtenerCursos());
-		 int page = pagina==null?0:pagina<0?0:pagina-1; //default page number is 0 (yes it is weird)
-	     int size = cant==null?2:cant<0?0:cant; //default page size is 10
-	     model.addAttribute("cursos", serviceCurso.obtenerCursosPaginados(page, size));
+		
       return "indexLibre";
     }
 	
@@ -105,26 +105,12 @@ public class LoginController {
         return "indexAdmin";
     }
 	
-	@GetMapping("{tab}")
-    public String tab(@PathVariable String tab,final Model model) {
-			String retorno="empty";
-        	if(tab.equals("tab1")) {
-        		model.addAttribute("estudiantes", serviceEst.obtenerEstudiantes());
-        		retorno =  "_" + tab;
-        	}else if(tab.equals("tab2")) {
-        		model.addAttribute("cursos", serviceCurso.obtenerCursos());
-        		retorno =  "_" + tab;
-        	}else if(tab.equals("tab3")) {
-        		Authentication auth= SecurityContextHolder.getContext().getAuthentication();
-    			model.addAttribute("curso", serviceEst.obtenerCurso( auth.getName()));
-        		retorno =  "_" + tab;
-        	}
-        	
-            
-        
-
-        return retorno;
+	@GetMapping("/mostrarCurso")
+	@PreAuthorize("isAuthenticated()")
+    public String mostrarCursos(final Model model) {
+		model.addAttribute("cursos", serviceCurso.obtenerCursos());
+        return "mostrarCurso";
     }
-	
+		
 	
 }

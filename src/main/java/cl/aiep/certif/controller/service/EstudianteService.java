@@ -37,4 +37,9 @@ public class EstudianteService {
 		// TODO Auto-generated method stub
 		return dao.obtieneCurso(rut);
 	}
+
+	public EstudianteDTO obtenerEstudiante(String rut) {
+		// TODO Auto-generated method stub
+		return dao.obtenerEstudiante(rut);
+	}
 }

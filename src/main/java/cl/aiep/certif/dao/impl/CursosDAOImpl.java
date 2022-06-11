@@ -43,7 +43,7 @@ public class CursosDAOImpl implements ICursosDAO{
 		List<CursoDTO> retorno= new ArrayList<CursoDTO>();
 		for(Curso curso:repoCurso.findAll())
 			if(curso.getId()>0) {
-			retorno.add(new CursoDTO(curso.getId(), curso.getNombre(),
+				retorno.add(new CursoDTO(curso.getId(), curso.getNombre(),
 					curso.getImagen(), curso.getFecinicio(),
 					curso.getFectermino(), curso.getCupos(), curso.getDescripcion() ));
 			}
